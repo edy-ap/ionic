@@ -4,16 +4,15 @@
 // iOS Popover
 // --------------------------------------------------
 
+:host {
+  --width: #{$popover-ios-width};
+  --max-height: #{$popover-ios-max-height};
+  --box-shadow: none;
+  --backdrop-opacity: var(--ion-backdrop-opacity, 0.08);
+}
+
 .popover-content {
   @include border-radius($popover-ios-border-radius);
-
-  width: $popover-ios-width;
-  min-width: $popover-ios-min-width;
-  min-height: $popover-ios-min-height;
-  max-height: $popover-ios-max-height;
-
-  background-color: $popover-ios-background-color;
-  color: $popover-ios-text-color;
 }
 
 
@@ -41,7 +40,7 @@
 
   transform: rotate(45deg);
 
-  background-color: $popover-ios-arrow-background-color;
+  background: var(--background);
 
   content: "";
   z-index: $z-index-overlay-wrapper;
@@ -59,8 +58,10 @@
 // Translucent Popover
 // -----------------------------------------
 
-:host(.popover-translucent) .popover-content,
-:host(.popover-translucent) .popover-arrow::after {
-  background: $popover-ios-translucent-background-color;
-  backdrop-filter: $popover-ios-translucent-filter;
+@supports (backdrop-filter: blur(0)) {
+  :host(.popover-translucent) .popover-content,
+  :host(.popover-translucent) .popover-arrow::after {
+    background: $popover-ios-translucent-background-color;
+    backdrop-filter: $popover-ios-translucent-filter;
+  }
 }

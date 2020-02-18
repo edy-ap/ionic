@@ -1,10 +1,100 @@
 # ion-content
 
-Content component provides an easy to use content area with some useful methods
+The content component provides an easy to use content area with some useful methods
 to control the scrollable area. There should only be one content in a single
-view component.
+view.
+
+Content, along with many other Ionic components, can be customized to modify its padding, margin, and more using the global styles provided in the [CSS Utilities](/docs/layout/css-utilities) or by individually styling it using CSS and the available [CSS Custom Properties](#css-custom-properties).
+
+
+## Fixed Content
+
+In order to place elements outside of the scrollable area, `slot="fixed"` can be added to the element. This will absolutely position the element placing it in the top left. In order to place the element in a different position, style it using [top, right, bottom, and left](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
+
 
 <!-- Auto Generated Below -->
+
+
+## Usage
+
+### Angular
+
+```html
+<ion-content
+  [scrollEvents]="true"
+  (ionScrollStart)="logScrollStart()"
+  (ionScroll)="logScrolling($event)"
+  (ionScrollEnd)="logScrollEnd()">
+    <h1>Main Content</h1>
+
+    <div slot="fixed">
+      <h1>Fixed Content</h1>
+    </div>
+</ion-content>
+```
+
+
+### Javascript
+
+```html
+<ion-content>
+  <h1>Main Content</h1>
+
+  <div slot="fixed">
+    <h1>Fixed Content</h1>
+  </div>
+</ion-content>
+```
+
+```javascript
+var content = document.querySelector('ion-content');
+content.scrollEvents = true;
+content.addEventListener('ionScrollStart', () => console.log('scroll start'));
+content.addEventListener('ionScroll', (ev) => console.log('scroll', ev.detail));
+content.addEventListener('ionScrollEnd', () => console.log('scroll end'));
+```
+
+
+### React
+
+```tsx
+import React from 'react';
+import { IonContent } from '@ionic/react';
+
+const ContentExample: React.FC = () => (
+  <IonContent
+    scrollEvents={true}
+    onIonScrollStart={() => {}}
+    onIonScroll={() => {}}
+    onIonScrollEnd={() => {}}>
+      <h1>Main Content</h1>
+
+      <div slot="fixed">
+        <h1>Fixed Content</h1>
+      </div>
+  </IonContent>
+);
+```
+
+
+### Vue
+
+```html
+<template>
+  <ion-content
+    :scrollEvents="true"
+    @ionScrollStart="logScrollStart()"
+    @ionScroll="logScrolling($event)"
+    @ionScrollEnd="logScrollEnd()">
+      <h1>Main Content</h1>
+
+      <div slot="fixed">
+        <h1>Fixed Content</h1>
+      </div>
+  </ion-content>
+</template>
+```
+
 
 
 ## Properties
@@ -21,23 +111,23 @@ view component.
 
 ## Events
 
-| Event            | Description                                                                                      | Detail           |
-| ---------------- | ------------------------------------------------------------------------------------------------ | ---------------- |
-| `ionScroll`      | Emitted while scrolling. This event is disabled by default. Look at the property: `scrollEvents` | ScrollDetail     |
-| `ionScrollEnd`   | Emitted when the scroll has ended.                                                               | ScrollBaseDetail |
-| `ionScrollStart` | Emitted when the scroll has started.                                                             | ScrollBaseDetail |
+| Event            | Description                                                                                      | Type                            |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ------------------------------- |
+| `ionScroll`      | Emitted while scrolling. This event is disabled by default. Look at the property: `scrollEvents` | `CustomEvent<ScrollDetail>`     |
+| `ionScrollEnd`   | Emitted when the scroll has ended.                                                               | `CustomEvent<ScrollBaseDetail>` |
+| `ionScrollStart` | Emitted when the scroll has started.                                                             | `CustomEvent<ScrollBaseDetail>` |
 
 
 ## Methods
 
 ### `getScrollElement() => Promise<HTMLElement>`
 
-Returns the element where the actual scrolling takes places.
-This element is the one you could subscribe to `scroll` events or manually modify
-`scrollTop`, however, it's recommended to use the API provided by `ion-content`:
+Get the element where the actual scrolling takes place.
+This element can be used to subscribe to `scroll` events or manually modify
+`scrollTop`. However, it's recommended to use the API provided by `ion-content`:
 
-Ie. Using `ionScroll`, `ionScrollStart`, `ionScrollEnd` for scrolling events
-and scrollToPoint() to scroll the content into a certain point.
+i.e. Using `ionScroll`, `ionScrollStart`, `ionScrollEnd` for scrolling events
+and `scrollToPoint()` to scroll the content into a certain point.
 
 #### Returns
 
@@ -47,15 +137,7 @@ Type: `Promise<HTMLElement>`
 
 ### `scrollByPoint(x: number, y: number, duration: number) => Promise<void>`
 
-Scroll by a specified X/Y distance in the component
-
-#### Parameters
-
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `x`        | `number` |             |
-| `y`        | `number` |             |
-| `duration` | `number` |             |
+Scroll by a specified X/Y distance in the component.
 
 #### Returns
 
@@ -65,13 +147,7 @@ Type: `Promise<void>`
 
 ### `scrollToBottom(duration?: number) => Promise<void>`
 
-Scroll to the bottom of the component
-
-#### Parameters
-
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `duration` | `number` |             |
+Scroll to the bottom of the component.
 
 #### Returns
 
@@ -81,15 +157,7 @@ Type: `Promise<void>`
 
 ### `scrollToPoint(x: number | null | undefined, y: number | null | undefined, duration?: number) => Promise<void>`
 
-Scroll to a specified X/Y location in the component
-
-#### Parameters
-
-| Name       | Type                          | Description |
-| ---------- | ----------------------------- | ----------- |
-| `x`        | `null \| number \| undefined` |             |
-| `y`        | `null \| number \| undefined` |             |
-| `duration` | `number`                      |             |
+Scroll to a specified X/Y location in the component.
 
 #### Returns
 
@@ -99,13 +167,7 @@ Type: `Promise<void>`
 
 ### `scrollToTop(duration?: number) => Promise<void>`
 
-Scroll to the top of the component
-
-#### Parameters
-
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `duration` | `number` |             |
+Scroll to the top of the component.
 
 #### Returns
 
@@ -114,19 +176,27 @@ Type: `Promise<void>`
 
 
 
+## Slots
+
+| Slot      | Description                                                          |
+| --------- | -------------------------------------------------------------------- |
+|           | Content is placed in the scrollable area if provided without a slot. |
+| `"fixed"` | Should be used for fixed content that should not scroll.             |
+
+
 ## CSS Custom Properties
 
-| Name                | Description                    |
-| ------------------- | ------------------------------ |
-| `--background`      | Background of the Content      |
-| `--color`           | Color of the Content           |
-| `--keyboard-offset` | Keyboard offset of the Content |
-| `--offset-bottom`   | Offset bottom of the Content   |
-| `--offset-top`      | Offset top of the Content      |
-| `--padding-bottom`  | Padding bottom of the Content  |
-| `--padding-end`     | Padding end of the Content     |
-| `--padding-start`   | Padding start of the Content   |
-| `--padding-top`     | Padding top of the Content     |
+| Name                | Description                                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `--background`      | Background of the content                                                                                  |
+| `--color`           | Color of the content                                                                                       |
+| `--keyboard-offset` | Keyboard offset of the content                                                                             |
+| `--offset-bottom`   | Offset bottom of the content                                                                               |
+| `--offset-top`      | Offset top of the content                                                                                  |
+| `--padding-bottom`  | Bottom padding of the content                                                                              |
+| `--padding-end`     | Right padding if direction is left-to-right, and left padding if direction is right-to-left of the content |
+| `--padding-start`   | Left padding if direction is left-to-right, and right padding if direction is right-to-left of the content |
+| `--padding-top`     | Top padding of the content                                                                                 |
 
 
 ----------------------------------------------

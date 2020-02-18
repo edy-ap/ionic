@@ -7,11 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="../../../../../css/core.css" rel="stylesheet">
   <link href="../../../../../scripts/testing/styles.css" rel="stylesheet">
-  <script src="../../../../../dist/ionic.js"></script>
-</head>
+  <script src="../../../../../scripts/testing/scripts.js"></script>
+  <script nomodule src="../../../../../dist/ionic/ionic.js"></script>
+  <script type="module" src="../../../../../dist/ionic/ionic.esm.js"></script></head>
 
 <body>
-  <ion-radio-group>
+  <ion-radio-group value="danger">
     <ion-radio></ion-radio>
 
     <ion-radio color="primary"></ion-radio>
@@ -19,7 +20,7 @@
     <ion-radio color="tertiary"></ion-radio>
     <ion-radio color="success"></ion-radio>
     <ion-radio color="warning"></ion-radio>
-    <ion-radio color="danger" checked></ion-radio>
+    <ion-radio color="danger" value="danger"></ion-radio>
     <ion-radio color="light"></ion-radio>
     <ion-radio color="medium"></ion-radio>
     <ion-radio color="dark"></ion-radio>
@@ -27,6 +28,15 @@
     <ion-radio disabled></ion-radio>
     <ion-radio color="secondary" disabled></ion-radio>
   </ion-radio-group>
+
+  <p>
+    allow-empty-selection="true":&nbsp;
+    <ion-radio-group allow-empty-selection="true">
+      <ion-radio color="primary" value="1"></ion-radio>
+      <ion-radio color="secondary" value="2"></ion-radio>
+      <ion-radio color="tertiary" value="3"></ion-radio>
+    </ion-radio-group>
+  </p>
 
   <style>
     /* to be able to see the radio buttons */

@@ -7,13 +7,18 @@
   /**
    * @prop --color: Color of the radio
    * @prop --color-checked: Color of the checked radio
+   * @prop --border-radius: Border radius of the radio
+   * @prop --inner-border-radius: Border radius of the inner checked radio
    */
+  --inner-border-radius: 50%;
 
   display: inline-block;
   position: relative;
   box-sizing: border-box;
 
   user-select: none;
+
+  z-index: $z-index-item-input;
 }
 
 :host(.radio-disabled) {
@@ -27,18 +32,13 @@
   align-items: center;
   justify-content: center;
 
-  width: var(--width);
-  height: var(--height);
+  width: 100%;
+  height: 100%;
 
   contain: layout size style;
 }
 
-.radio-inner {
-  width: var(--inner-width);
-  height: var(--inner-height);
-}
-
-input {
+button {
   @include input-cover();
 }
 

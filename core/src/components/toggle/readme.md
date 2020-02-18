@@ -7,6 +7,187 @@ Toggles change the state of a single option. Toggles can be switched on or off b
 <!-- Auto Generated Below -->
 
 
+## Usage
+
+### Angular
+
+```html
+<!-- Default Toggle -->
+<ion-toggle></ion-toggle>
+
+<!-- Disabled Toggle -->
+<ion-toggle disabled></ion-toggle>
+
+<!-- Checked Toggle -->
+<ion-toggle checked></ion-toggle>
+
+<!-- Toggle Colors -->
+<ion-toggle color="primary"></ion-toggle>
+<ion-toggle color="secondary"></ion-toggle>
+<ion-toggle color="danger"></ion-toggle>
+<ion-toggle color="light"></ion-toggle>
+<ion-toggle color="dark"></ion-toggle>
+
+<!-- Toggles in a List -->
+<ion-list>
+  <ion-item>
+    <ion-label>Pepperoni</ion-label>
+    <ion-toggle [(ngModel)]="pepperoni"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Sausage</ion-label>
+    <ion-toggle [(ngModel)]="sausage" disabled="true"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Mushrooms</ion-label>
+    <ion-toggle [(ngModel)]="mushrooms"></ion-toggle>
+  </ion-item>
+</ion-list>
+```
+
+
+### Javascript
+
+```html
+<!-- Default Toggle -->
+<ion-toggle></ion-toggle>
+
+<!-- Disabled Toggle -->
+<ion-toggle disabled></ion-toggle>
+
+<!-- Checked Toggle -->
+<ion-toggle checked></ion-toggle>
+
+<!-- Toggle Colors -->
+<ion-toggle color="primary"></ion-toggle>
+<ion-toggle color="secondary"></ion-toggle>
+<ion-toggle color="danger"></ion-toggle>
+<ion-toggle color="light"></ion-toggle>
+<ion-toggle color="dark"></ion-toggle>
+
+<!-- Toggles in a List -->
+<ion-list>
+  <ion-item>
+    <ion-label>Pepperoni</ion-label>
+    <ion-toggle slot="end" value="pepperoni" checked></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Sausage</ion-label>
+    <ion-toggle slot="end" value="sausage" disabled></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Mushrooms</ion-label>
+    <ion-toggle slot="end" value="mushrooms"></ion-toggle>
+  </ion-item>
+</ion-list>
+```
+
+
+### React
+
+```tsx
+import React from 'react';
+import { IonToggle, IonList, IonItem, IonLabel, IonContent } from '@ionic/react';
+
+export const ToggleExample: React.FC = () => (
+  <IonContent>
+    {/*-- Default Toggle --*/}
+    <IonToggle />
+
+    {/*-- Disabled Toggle --*/}
+    <IonToggle disabled />
+
+    {/*-- Checked Toggle --*/}
+    <IonToggle checked />
+
+    {/*-- Toggle Colors --*/}
+    <IonToggle color="primary" />
+    <IonToggle color="secondary" />
+    <IonToggle color="danger" />
+    <IonToggle color="light" />
+    <IonToggle color="dark" />
+
+    {/*-- Toggles in a List --*/}
+    <IonList>
+      <IonItem>
+        <IonLabel>Pepperoni</IonLabel>
+        <IonToggle value="pepperoni" onIonChange={() => {}} />
+      </IonItem>
+
+      <IonItem>
+        <IonLabel>Sausage</IonLabel>
+        <IonToggle value="sausage" onIonChange={() => {}} disabled={true} />
+      </IonItem>
+
+      <IonItem>
+        <IonLabel>Mushrooms</IonLabel>
+        <IonToggle value="mushrooms" onIonChange={() => {}} />
+      </IonItem>
+    </IonList>
+  </IonContent>
+);
+```
+
+
+### Vue
+
+```html
+<template>
+  <!-- Default Toggle -->
+  <ion-toggle></ion-toggle>
+
+  <!-- Disabled Toggle -->
+  <ion-toggle disabled></ion-toggle>
+
+  <!-- Checked Toggle -->
+  <ion-toggle checked></ion-toggle>
+
+  <!-- Toggle Colors -->
+  <ion-toggle color="primary"></ion-toggle>
+  <ion-toggle color="secondary"></ion-toggle>
+  <ion-toggle color="danger"></ion-toggle>
+  <ion-toggle color="light"></ion-toggle>
+  <ion-toggle color="dark"></ion-toggle>
+
+  <!-- Toggles in a List -->
+  <ion-list>
+    <ion-item>
+      <ion-label>Pepperoni</ion-label>
+      <ion-toggle
+        @ionChange="toppings.push($event.target.value)"
+        value="pepperoni"
+        :checked="toppings.indexOf('pepperoni') !== -1">
+      </ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Sausage</ion-label>
+      <ion-toggle
+        @ionChange="toppings.push($event.target.value)"
+        value="sausage"
+        :checked="toppings.indexOf('pepperoni') !== -1"
+        disabled="true">
+      </ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Mushrooms</ion-label>
+      <ion-toggle
+        @ionChange="toppings.push($event.target.value)"
+        value="mushrooms"
+        :checked="toppings.indexOf('pepperoni') !== -1">
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+</template>
+```
+
+
+
 ## Properties
 
 | Property   | Attribute  | Description                                                                                                                                                                                                                                                            | Type                          | Default        |
@@ -21,12 +202,11 @@ Toggles change the state of a single option. Toggles can be switched on or off b
 
 ## Events
 
-| Event       | Description                                  | Detail                  |
-| ----------- | -------------------------------------------- | ----------------------- |
-| `ionBlur`   | Emitted when the toggle loses focus.         | void                    |
-| `ionChange` | Emitted when the value property has changed. | CheckedInputChangeEvent |
-| `ionFocus`  | Emitted when the toggle has focus.           | void                    |
-| `ionStyle`  | Emitted when the styles change.              | StyleEvent              |
+| Event       | Description                                  | Type                                   |
+| ----------- | -------------------------------------------- | -------------------------------------- |
+| `ionBlur`   | Emitted when the toggle loses focus.         | `CustomEvent<void>`                    |
+| `ionChange` | Emitted when the value property has changed. | `CustomEvent<ToggleChangeEventDetail>` |
+| `ionFocus`  | Emitted when the toggle has focus.           | `CustomEvent<void>`                    |
 
 
 ## CSS Custom Properties
@@ -35,8 +215,10 @@ Toggles change the state of a single option. Toggles can be switched on or off b
 | ----------------------------- | -------------------------------------------- |
 | `--background`                | Background of the toggle                     |
 | `--background-checked`        | Background of the toggle when checked        |
+| `--border-radius`             | Border radius of the toggle track            |
 | `--handle-background`         | Background of the toggle handle              |
 | `--handle-background-checked` | Background of the toggle handle when checked |
+| `--handle-border-radius`      | Border radius of the toggle handle           |
 
 
 ----------------------------------------------

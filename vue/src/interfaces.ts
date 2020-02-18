@@ -1,18 +1,13 @@
 import Vue from 'vue';
-import IonicApi from './api';
 import VueRouter from 'vue-router';
+import { RouterDirection, HTMLStencilElement } from '@ionic/core';
 import { RouterOptions } from 'vue-router/types/router';
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $ionic: IonicApi;
-  }
-}
 
 declare module 'vue-router/types/router' {
   interface VueRouter {
-    direction: number;
-    directionOverride: number | null;
+    direction: RouterDirection;
+    directionOverride: RouterDirection | null;
+    transition: Promise<void>;
     canGoBack(): boolean;
   }
 }
@@ -36,10 +31,15 @@ export interface EsModule extends Object {
   [Symbol.toStringTag]: string;
 }
 
-export interface HTMLStencilElement extends HTMLElement {
-  componentOnReady(): Promise<this>;
-  componentOnReady(done: (el?: this) => void): void;
-  forceUpdate(): void;
+export interface IonicGlobal {
+  config?: any;
+  ael?: (elm: any, eventName: string, cb: (ev: Event) => void, opts: any) => void;
+  raf?: (ts: number) => void;
+  rel?: (elm: any, eventName: string, cb: (ev: Event) => void, opts: any) => void;
+}
+
+export interface IonicWindow extends Window {
+  Ionic: IonicGlobal;
 }
 
 export interface FrameworkDelegate {
@@ -60,8 +60,8 @@ export interface ApiCache {
 }
 
 export interface RouterArgs extends RouterOptions {
-  direction: number;
-  viewCount: number;
+  direction?: RouterDirection;
+  viewCount?: number;
 }
 
 export interface ProxyControllerInterface {
@@ -80,7 +80,7 @@ export interface ProxyMenuControllerInterface {
   close(menuId?: string): Promise<boolean>;
   toggle(menuId?: string): Promise<boolean>;
   enable(shouldEnable: boolean, menuId?: string): Promise<HTMLElement>;
-  swipeEnable(shouldEnable: boolean, menuId?: string): Promise<HTMLElement>;
+  swipeGesture(shouldEnable: boolean, menuId?: string): Promise<HTMLElement>;
   isOpen(menuId?: string): Promise<boolean>;
   isEnabled(menuId?: string): Promise<boolean>;
   get(menuId?: string): Promise<HTMLElement>;

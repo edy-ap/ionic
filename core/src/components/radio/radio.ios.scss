@@ -6,10 +6,9 @@
 
 :host {
   --color-checked: #{ion-color(primary, base)};
-  --width: #{$radio-ios-icon-width};
-  --height: #{$radio-ios-icon-height};
-  --inner-width: 5px;
-  --inner-height: 12px;
+
+  width: $radio-ios-icon-width;
+  height: $radio-ios-icon-height;
 }
 
 :host(.ion-color.radio-checked) .radio-inner {
@@ -24,10 +23,12 @@
 // iOS Radio Checkmark: Checked
 // -----------------------------------------
 
-:host(.radio-checked) .radio-inner {
-  width: 5px;
-  height: 12px;
+.radio-inner {
+  width: 33%;
+  height: 50%;
+}
 
+:host(.radio-checked) .radio-inner {
   transform: rotate(45deg);
 
   border-width: $radio-ios-icon-border-width;
@@ -37,8 +38,10 @@
   border-color: var(--color-checked);
 }
 
+
 // iOS Radio: Disabled
 // -----------------------------------------
+
 :host(.radio-disabled) {
   opacity: $radio-ios-disabled-opacity;
 }
@@ -47,8 +50,8 @@
 // iOS Radio: Keyboard Focus
 // -----------------------------------------
 
-:host(.radio-key) .radio-icon::after {
-  @include border-radius(50%);
+:host(.ion-focused) .radio-icon::after {
+  @include border-radius(var(--inner-border-radius));
   @include position(-8px, null, null, -9px);
 
   display: block;

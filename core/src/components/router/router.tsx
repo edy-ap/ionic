@@ -1,9 +1,9 @@
-import { Component, ComponentInterface, Element, Event, EventEmitter, Listen, Method, Prop, QueueApi } from '@stencil/core';
+import { Component, ComponentInterface, Element, Event, EventEmitter, Listen, Method, Prop } from '@stencil/core';
 
-import { BackButtonEvent, Config, RouteChain, RouterDirection, RouterEventDetail } from '../../interface';
+import { BackButtonEvent, RouteChain, RouterDirection, RouterEventDetail } from '../../interface';
 import { debounce } from '../../utils/helpers';
 
-import { RouterIntent } from './utils/constants';
+import { ROUTER_INTENT_BACK, ROUTER_INTENT_FORWARD, ROUTER_INTENT_NONE } from './utils/constants';
 import { printRedirects, printRoutes } from './utils/debug';
 import { readNavState, waitUntilNavNode, writeNavState } from './utils/dom';
 import { routeRedirect, routerIDsToChain, routerPathToChain } from './utils/matching';
@@ -22,10 +22,6 @@ export class Router implements ComponentInterface {
   private waitPromise?: Promise<void>;
 
   @Element() el!: HTMLElement;
-
-  @Prop({ context: 'config' }) config!: Config;
-  @Prop({ context: 'queue' }) queue!: QueueApi;
-  @Prop({ context: 'window' }) win!: Window;
 
   /**
    * By default `ion-router` will match the routes at the root path ("/").
@@ -62,18 +58,18 @@ export class Router implements ComponentInterface {
 
   async componentWillLoad() {
     console.debug('[ion-router] router will load');
-    await waitUntilNavNode(this.win);
+    await waitUntilNavNode();
     console.debug('[ion-router] found nav');
 
     await this.onRoutesChanged();
   }
 
   componentDidLoad() {
-    this.win.addEventListener('ionRouteRedirectChanged', debounce(this.onRedirectChanged.bind(this), 10));
-    this.win.addEventListener('ionRouteDataChanged', debounce(this.onRoutesChanged.bind(this), 100));
+    window.addEventListener('ionRouteRedirectChanged', debounce(this.onRedirectChanged.bind(this), 10));
+    window.addEventListener('ionRouteDataChanged', debounce(this.onRoutesChanged.bind(this), 100));
   }
 
-  @Listen('window:popstate')
+  @Listen('popstate', { target: 'window' })
   protected onPopState() {
     const direction = this.historyDirection();
     const path = this.getPath();
@@ -81,13 +77,16 @@ export class Router implements ComponentInterface {
     return this.writeNavStateRoot(path, direction);
   }
 
-  @Listen('document:ionBackButton')
+  @Listen('ionBackButton', { target: 'document' })
   protected onBackButton(ev: BackButtonEvent) {
-    ev.detail.register(0, () => this.goBack());
+    ev.detail.register(0, () => this.back());
   }
 
   /**
    * Navigate to the specified URL.
+   *
+   * @param url The url to navigate to.
+   * @param direction The direction of the animation. Defaults to `"forward"`.
    */
   @Method()
   push(url: string, direction: RouterDirection = 'forward') {
@@ -97,23 +96,22 @@ export class Router implements ComponentInterface {
     console.debug('[ion-router] URL pushed -> updating nav', url, direction);
 
     const path = parsePath(url);
-    const intent = DIRECTION_TO_INTENT[direction];
-    this.setPath(path, intent);
-    return this.writeNavStateRoot(path, intent);
+    this.setPath(path, direction);
+    return this.writeNavStateRoot(path, direction);
   }
 
   /**
    * Go back to previous page in the window.history.
    */
   @Method()
-  goBack() {
-    this.win.history.back();
+  back(): Promise<void> {
+    window.history.back();
     return Promise.resolve(this.waitPromise);
   }
 
   /** @internal */
   @Method()
-  printDebug() {
+  async printDebug() {
     console.debug('CURRENT PATH', this.getPath());
     console.debug('PREVIOUS PATH', this.previousPath);
     printRoutes(readRoutes(this.el));
@@ -122,12 +120,12 @@ export class Router implements ComponentInterface {
 
   /** @internal */
   @Method()
-  async navChanged(intent: number): Promise<boolean> {
+  async navChanged(direction: RouterDirection): Promise<boolean> {
     if (this.busy) {
       console.warn('[ion-router] router is busy, navChanged was cancelled');
       return false;
     }
-    const { ids, outlet } = await readNavState(this.win.document.body);
+    const { ids, outlet } = await readNavState(window.document.body);
     const routes = readRoutes(this.el);
     const chain = routerIDsToChain(ids, routes);
     if (!chain) {
@@ -142,43 +140,45 @@ export class Router implements ComponentInterface {
     }
 
     console.debug('[ion-router] nav changed -> update URL', ids, path);
-    this.setPath(path, intent);
+    this.setPath(path, direction);
 
-    await this.safeWriteNavState(outlet, chain, RouterIntent.None, path, null, ids.length);
+    await this.safeWriteNavState(outlet, chain, ROUTER_INTENT_NONE, path, null, ids.length);
     return true;
   }
 
   private onRedirectChanged() {
     const path = this.getPath();
     if (path && routeRedirect(path, readRedirects(this.el))) {
-      this.writeNavStateRoot(path, RouterIntent.None);
+      this.writeNavStateRoot(path, ROUTER_INTENT_NONE);
     }
   }
 
   private onRoutesChanged() {
-    return this.writeNavStateRoot(this.getPath(), RouterIntent.None);
+    return this.writeNavStateRoot(this.getPath(), ROUTER_INTENT_NONE);
   }
 
   private historyDirection() {
-    if (this.win.history.state === null) {
+    const win = window;
+
+    if (win.history.state === null) {
       this.state++;
-      this.win.history.replaceState(this.state, this.win.document.title, this.win.document.location.href);
+      win.history.replaceState(this.state, win.document.title, win.document.location && win.document.location.href);
     }
 
-    const state = this.win.history.state;
+    const state = win.history.state;
     const lastState = this.lastState;
     this.lastState = state;
 
     if (state > lastState) {
-      return RouterIntent.Forward;
+      return ROUTER_INTENT_FORWARD;
     } else if (state < lastState) {
-      return RouterIntent.Back;
+      return ROUTER_INTENT_BACK;
     } else {
-      return RouterIntent.None;
+      return ROUTER_INTENT_NONE;
     }
   }
 
-  private async writeNavStateRoot(path: string[] | null, intent: RouterIntent): Promise<boolean> {
+  private async writeNavStateRoot(path: string[] | null, direction: RouterDirection): Promise<boolean> {
     if (!path) {
       console.error('[ion-router] URL is not part of the routing set');
       return false;
@@ -189,7 +189,7 @@ export class Router implements ComponentInterface {
     const redirect = routeRedirect(path, redirects);
     let redirectFrom: string[] | null = null;
     if (redirect) {
-      this.setPath(redirect.to!, intent);
+      this.setPath(redirect.to!, direction);
       redirectFrom = redirect.from;
       path = redirect.to!;
     }
@@ -203,18 +203,18 @@ export class Router implements ComponentInterface {
     }
 
     // write DOM give
-    return this.safeWriteNavState(this.win.document.body, chain, intent, path, redirectFrom);
+    return this.safeWriteNavState(document.body, chain, direction, path, redirectFrom);
   }
 
   private async safeWriteNavState(
-    node: HTMLElement | undefined, chain: RouteChain, intent: RouterIntent,
+    node: HTMLElement | undefined, chain: RouteChain, direction: RouterDirection,
     path: string[], redirectFrom: string[] | null,
     index = 0
   ): Promise<boolean> {
     const unlock = await this.lock();
     let changed = false;
     try {
-      changed = await this.writeNavState(node, chain, intent, path, redirectFrom, index);
+      changed = await this.writeNavState(node, chain, direction, path, redirectFrom, index);
     } catch (e) {
       console.error(e);
     }
@@ -234,7 +234,7 @@ export class Router implements ComponentInterface {
   }
 
   private async writeNavState(
-    node: HTMLElement | undefined, chain: RouteChain, intent: RouterIntent,
+    node: HTMLElement | undefined, chain: RouteChain, direction: RouterDirection,
     path: string[], redirectFrom: string[] | null,
     index = 0
   ): Promise<boolean> {
@@ -250,7 +250,7 @@ export class Router implements ComponentInterface {
       this.ionRouteWillChange.emit(routeEvent);
     }
 
-    const changed = await writeNavState(node, chain, intent, index);
+    const changed = await writeNavState(node, chain, direction, index);
     this.busy = false;
 
     if (changed) {
@@ -264,13 +264,13 @@ export class Router implements ComponentInterface {
     return changed;
   }
 
-  private setPath(path: string[], intent: RouterIntent) {
+  private setPath(path: string[], direction: RouterDirection) {
     this.state++;
-    writePath(this.win.history, this.root, this.useHash, path, intent, this.state);
+    writePath(window.history, this.root, this.useHash, path, direction, this.state);
   }
 
   private getPath(): string[] | null {
-    return readPath(this.win.location, this.root, this.useHash);
+    return readPath(window.location, this.root, this.useHash);
   }
 
   private routeChangeEvent(path: string[], redirectFromPath: string[] | null): RouterEventDetail | null {
@@ -288,9 +288,3 @@ export class Router implements ComponentInterface {
     };
   }
 }
-
-const DIRECTION_TO_INTENT = {
-  'back': RouterIntent.Back,
-  'root': RouterIntent.None,
-  'forward': RouterIntent.Forward
-};

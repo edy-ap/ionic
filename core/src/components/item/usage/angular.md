@@ -9,7 +9,7 @@ Basic Usage
 </ion-item>
 
 <!-- Item as a Button -->
-<ion-item (click)="buttonClick()">
+<ion-item button (click)="buttonClick()">
   <ion-label>
     Button Item
   </ion-label>
@@ -38,7 +38,7 @@ Detail Arrows
   </ion-label>
 </ion-item>
 
-<ion-item (click)="buttonClick()">
+<ion-item button (click)="buttonClick()" detail>
   <ion-label>
     Button Item with Detail Arrow
   </ion-label>
@@ -68,14 +68,14 @@ List Items
   </ion-item>
 
   <ion-item>
-    <ion-label text-wrap>
+    <ion-label class="ion-text-wrap">
     Multiline text that should wrap when it is too long
     to fit on one line in the item.
     </ion-label>
   </ion-item>
 
   <ion-item>
-    <ion-label text-wrap>
+    <ion-label class="ion-text-wrap">
       <ion-text color="primary">
         <h3>H3 Primary Title</h3>
       </ion-text>
@@ -116,33 +116,37 @@ Item Lines
 <!-- List Full Lines -->
 <ion-list lines="full">
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>Full Lines Item 1</ion-label>
   </ion-item>
 
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>Full Lines Item 2</ion-label>
   </ion-item>
 </ion-list>
 
 <!-- List Inset Lines -->
 <ion-list lines="inset">
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>Inset Lines Item 1</ion-label>
   </ion-item>
 
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>Inset Lines Item 2</ion-label>
   </ion-item>
 </ion-list>
 
 <!-- List No Lines -->
 <ion-list lines="none">
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>No lines Item 1</ion-label>
   </ion-item>
 
   <ion-item>
-    <ion-label>Item</ion-label>
+    <ion-label>No lines Item 2</ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>No lines Item 3</ion-label>
   </ion-item>
 </ion-list>
 ```
@@ -151,7 +155,7 @@ Item Lines
 Media Items
 
 ```html
-<ion-item (click)="testClick()">
+<ion-item button (click)="testClick()">
   <ion-avatar slot="start">
     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
   </ion-avatar>
@@ -180,7 +184,7 @@ Media Items
   <ion-button fill="outline" slot="end">View</ion-button>
 </ion-item>
 
-<ion-item (click)="testClick()">
+<ion-item button (click)="testClick()">
   <ion-thumbnail slot="start">
     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
   </ion-thumbnail>

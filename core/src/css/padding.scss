@@ -1,3 +1,4 @@
+@import "../themes/ionic.skip-warns.scss";
 @import "../themes/ionic.globals";
 @import "../themes/ionic.mixins";
 
@@ -13,7 +14,7 @@ $margin: var(--ion-margin, 16px);
 // Padding
 // --------------------------------------------------
 
-[no-padding] {
+.ion-no-padding {
   --padding-start: 0;
   --padding-end: 0;
   --padding-top: 0;
@@ -22,7 +23,7 @@ $margin: var(--ion-margin, 16px);
   @include padding(0);
 }
 
-[padding] {
+.ion-padding {
   --padding-start: #{$padding};
   --padding-end: #{$padding};
   --padding-top: #{$padding};
@@ -31,38 +32,38 @@ $margin: var(--ion-margin, 16px);
   @include padding($padding);
 }
 
-[padding-top] {
+.ion-padding-top {
   --padding-top: #{$padding};
 
   @include padding($padding, null, null, null);
 }
 
-[padding-start] {
+.ion-padding-start {
   --padding-start: #{$padding};
 
   @include padding-horizontal($padding, null);
 }
 
-[padding-end] {
+.ion-padding-end {
   --padding-end: #{$padding};
 
   @include padding-horizontal(null, $padding);
 }
 
-[padding-bottom] {
+.ion-padding-bottom {
   --padding-bottom: #{$padding};
 
   @include padding(null, null, $padding, null);
 }
 
-[padding-vertical] {
+.ion-padding-vertical {
   --padding-top: #{$padding};
   --padding-bottom: #{$padding};
 
   @include padding($padding, null, $padding, null);
 }
 
-[padding-horizontal] {
+.ion-padding-horizontal {
   --padding-start: #{$padding};
   --padding-end: #{$padding};
 
@@ -73,7 +74,7 @@ $margin: var(--ion-margin, 16px);
 // Margin
 // --------------------------------------------------
 
-[no-margin] {
+.ion-no-margin {
   --margin-start: 0;
   --margin-end: 0;
   --margin-top: 0;
@@ -82,7 +83,7 @@ $margin: var(--ion-margin, 16px);
   @include margin(0);
 }
 
-[margin] {
+.ion-margin {
   --margin-start: #{$margin};
   --margin-end: #{$margin};
   --margin-top: #{$margin};
@@ -91,39 +92,38 @@ $margin: var(--ion-margin, 16px);
   @include margin($margin);
 }
 
-[margin-top] {
+.ion-margin-top {
   --margin-top: #{$margin};
 
   @include margin($margin, null, null, null);
 }
 
-
-[margin-start] {
+.ion-margin-start {
   --margin-start: #{$margin};
 
   @include margin-horizontal($margin, null);
 }
 
-[margin-end] {
+.ion-margin-end {
   --margin-end: #{$margin};
 
   @include margin-horizontal(null, $margin);
 }
 
-[margin-bottom] {
+.ion-margin-bottom {
   --margin-bottom: #{$margin};
 
   @include margin(null, null, $margin, null);
 }
 
-[margin-vertical] {
+.ion-margin-vertical {
   --margin-top: #{$margin};
   --margin-bottom: #{$margin};
 
   @include margin($margin, null, $margin, null);
 }
 
-[margin-horizontal] {
+.ion-margin-horizontal {
   --margin-start: #{$margin};
   --margin-end: #{$margin};
 

@@ -7,8 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="../../../../../css/ionic.bundle.css" rel="stylesheet">
   <link href="../../../../../scripts/testing/styles.css" rel="stylesheet">
-  <script src="../../../../../dist/ionic.js"></script>
-</head>
+  <script src="../../../../../scripts/testing/scripts.js"></script>
+  <script nomodule src="../../../../../dist/ionic/ionic.js"></script>
+  <script type="module" src="../../../../../dist/ionic/ionic.esm.js"></script></head>
 
 <body>
   <ion-app>
@@ -21,11 +22,15 @@
 
     <ion-content class="outer-content test-content">
       <ion-list>
-        <ion-list-header>Single Value Select</ion-list-header>
+        <ion-list-header>
+          <ion-label>
+            Single Value Select
+          </ion-label>
+        </ion-list-header>
 
         <ion-item>
           <ion-label>Gender</ion-label>
-          <ion-select id="gender" placeholder="Select One">
+          <ion-select id="gender" placeholder="Select One" class="custom-select">
             <ion-select-option value="fn">Female</ion-select-option>
             <ion-select-option value="ml">Male</ion-select-option>
           </ion-select>
@@ -34,7 +39,7 @@
         <ion-item>
           <ion-label>Hair Color</ion-label>
           <ion-select id="hairColor" value="brown" ok-text="Okay" cancel-text="Dismiss">
-            <ion-select-option value="brown" selected>Brown</ion-select-option>
+            <ion-select-option value="brown">Brown</ion-select-option>
             <ion-select-option value="blonde">Blonde</ion-select-option>
             <ion-select-option value="black">Black</ion-select-option>
             <ion-select-option value="red">Red</ion-select-option>
@@ -43,7 +48,7 @@
 
         <ion-item>
           <ion-label>Skittles</ion-label>
-          <ion-select id="customSelect" interface="action-sheet" name="skittles">
+          <ion-select id="skittles" interface="action-sheet" name="skittles">
             <ion-select-option value="red">Red</ion-select-option>
             <ion-select-option value="purple">Purple</ion-select-option>
             <ion-select-option value="yellow">Yellow</ion-select-option>
@@ -55,11 +60,28 @@
       </ion-list>
 
       <ion-list>
-        <ion-list-header>Select - Custom Interface Options</ion-list-header>
+        <ion-list-header>
+          <ion-label>
+            Object Values with trackBy
+          </ion-label>
+        </ion-list-header>
 
         <ion-item>
+          <ion-label>Users</ion-label>
+          <ion-select id="objectSelectCompareWith"></ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header>
+          <ion-label>
+            Select - Custom Interface Options
+          </ion-label>
+        </ion-list-header>
+
+        <ion-item color="danger">
           <ion-label>Alert</ion-label>
-          <ion-select id="customAlertSelect" interface="alert" multiple="true" placeholder="Select One">
+          <ion-select id="customAlertSelect" value="bacon" interface="alert" multiple="true" placeholder="Select One">
             <ion-select-option value="bacon">Bacon</ion-select-option>
             <ion-select-option value="olives">Black Olives</ion-select-option>
             <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
@@ -73,7 +95,7 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item color="dark">
           <ion-label>Popover</ion-label>
           <ion-select id="customPopoverSelect" interface="popover" placeholder="Select One">
             <ion-select-option value="brown">Brown</ion-select-option>
@@ -83,7 +105,7 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item color="primary">
           <ion-label>Action Sheet</ion-label>
           <ion-select id="customActionSheetSelect" interface="action-sheet" placeholder="Select One">
             <ion-select-option value="red">Red</ion-select-option>
@@ -97,7 +119,11 @@
       </ion-list>
 
       <ion-list>
-        <ion-list-header>Popover Interface Select</ion-list-header>
+        <ion-list-header>
+          <ion-label>
+            Popover Interface Select
+          </ion-label>
+        </ion-list-header>
 
         <ion-item>
           <ion-label>Gender</ion-label>
@@ -121,10 +147,10 @@
 
         <ion-item>
           <ion-label>Date</ion-label>
-          <ion-select placeholder="Month" interface="popover">
+          <ion-select placeholder="Month" value="03" interface="popover">
             <ion-select-option value="01">January</ion-select-option>
             <ion-select-option value="02">February</ion-select-option>
-            <ion-select-option value="03" selected="true">March</ion-select-option>
+            <ion-select-option value="03">March</ion-select-option>
             <ion-select-option value="04">April</ion-select-option>
             <ion-select-option value="05">May</ion-select-option>
             <ion-select-option value="06">June</ion-select-option>
@@ -135,18 +161,18 @@
             <ion-select-option value="11">November</ion-select-option>
             <ion-select-option value="12">December</ion-select-option>
           </ion-select>
-          <ion-select placeholder="Year" interface="popover">
-            <ion-select-option>1989</ion-select-option>
-            <ion-select-option>1990</ion-select-option>
-            <ion-select-option>1991</ion-select-option>
-            <ion-select-option>1992</ion-select-option>
-            <ion-select-option>1993</ion-select-option>
-            <ion-select-option selected="true">1994</ion-select-option>
-            <ion-select-option>1995</ion-select-option>
-            <ion-select-option>1996</ion-select-option>
-            <ion-select-option>1997</ion-select-option>
-            <ion-select-option>1998</ion-select-option>
-            <ion-select-option>1999</ion-select-option>
+          <ion-select placeholder="Year" value="94" interface="popover">
+            <ion-select-option value="89">1989</ion-select-option>
+            <ion-select-option value="90">1990</ion-select-option>
+            <ion-select-option value="91">1991</ion-select-option>
+            <ion-select-option value="92">1992</ion-select-option>
+            <ion-select-option value="93">1993</ion-select-option>
+            <ion-select-option value="94">1994</ion-select-option>
+            <ion-select-option value="95">1995</ion-select-option>
+            <ion-select-option value="96">1996</ion-select-option>
+            <ion-select-option value="97">1997</ion-select-option>
+            <ion-select-option value="98">1998</ion-select-option>
+            <ion-select-option value="99">1999</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -154,7 +180,11 @@
 
 
       <ion-list>
-        <ion-list-header>Action Sheet Interface Select</ion-list-header>
+        <ion-list-header>
+          <ion-label>
+            Action Sheet Interface Select
+          </ion-label>
+        </ion-list-header>
 
         <ion-item>
           <ion-label>Mute Notifications</ion-label>
@@ -180,7 +210,11 @@
       </ion-list>
 
       <ion-list>
-        <ion-list-header>Multiple Value Select</ion-list-header>
+        <ion-list-header>
+          <ion-label>
+            Multiple Value Select
+          </ion-label>
+        </ion-list-header>
 
         <ion-item>
           <ion-label>Toppings</ion-label>
@@ -222,8 +256,8 @@
 
         <ion-item>
           <ion-label>Disabled</ion-label>
-          <ion-select multiple disabled="true">
-            <ion-select-option selected="true">Selected Text</ion-select-option>
+          <ion-select multiple value="text" disabled="true">
+            <ion-select-option value="text">Selected Text</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -238,10 +272,10 @@
 
         <ion-item>
           <ion-label position="stacked">Stacked: selected</ion-label>
-          <ion-select>
-            <ion-select-option>Default</ion-select-option>
-            <ion-select-option selected>Other</ion-select-option>
-            <ion-select-option>N/A</ion-select-option>
+          <ion-select value="other">
+            <ion-select-option value="default">Default</ion-select-option>
+            <ion-select-option value="other">Other</ion-select-option>
+            <ion-select-option value="na">N/A</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -256,15 +290,15 @@
 
         <ion-item>
           <ion-label position="floating">Floating: selected</ion-label>
-          <ion-select>
-            <ion-select-option selected="true">Default</ion-select-option>
-            <ion-select-option>Other</ion-select-option>
-            <ion-select-option>N/A</ion-select-option>
+          <ion-select value="default">
+            <ion-select-option value="default">Default</ion-select-option>
+            <ion-select-option value="other">Other</ion-select-option>
+            <ion-select-option value="na">N/A</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
 
-      <div text-center>
+      <div class="ion-text-center">
         <ion-button onclick="toggleBoolean('dynamicDisabled', 'disabled')">
           Toggle Disabled
         </ion-button>
@@ -272,7 +306,63 @@
 
     </ion-content>
 
+    <style>
+      .outer-content {
+        --background: #f2f2f2;
+      }
+      .custom-select {
+        --placeholder-opacity: 0.5;
+      }
+    </style>
+
     <script>
+      let objectOptions = [
+        {
+          id: 1,
+          first: 'Alice',
+          last: 'Smith',
+        },
+        {
+          id: 2,
+          first: 'Bob',
+          last: 'Davis',
+        },
+        {
+          id: 3,
+          first: 'Charlie',
+          last: 'Rosenburg',
+        }
+      ];
+
+      let compareWithFn = (o1, o2) => {
+        return o1 && o2 ? o1.id === o2.id : o1 === o2;
+      };
+
+      let objectSelectElement = document.getElementById('objectSelectCompareWith');
+      objectSelectElement.compareWith = compareWithFn; // 'id';
+
+      objectOptions.forEach((option, i) => {
+        let selectOption = document.createElement('ion-select-option');
+        selectOption.value = option;
+        selectOption.textContent = option.first + ' ' + option.last;
+
+        objectSelectElement.appendChild(selectOption)
+      });
+      
+      objectSelectElement.value = {
+        id: 1,
+        first: 'Alice',
+        last: 'Smith',
+      };
+
+      setTimeout(() => {
+        objectSelectElement.value = {
+          id: 1,
+          first: 'Alice',
+          last: 'Smith',
+        };
+      }, 3000);
+
       var pets = document.getElementById('pets');
       pets.value = ['bird', 'dog'];
 

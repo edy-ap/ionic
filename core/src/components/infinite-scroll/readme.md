@@ -12,7 +12,108 @@ The `ion-infinite-scroll` component has the infinite scroll logic. It requires a
 
 Separating the `ion-infinite-scroll` and `ion-infinite-scroll-content` components allows developers to create their own content components, if desired. This content can contain anything, from an SVG element to elements with unique CSS animations.
 
+## React
+
+The Infinite Scroll component is not supported in React.
+
 <!-- Auto Generated Below -->
+
+
+## Usage
+
+### Angular
+
+```html
+<ion-content>
+  <ion-button (click)="toggleInfiniteScroll()" expand="block">
+    Toggle Infinite Scroll
+  </ion-button>
+
+  <ion-list></ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+```
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
+
+@Component({
+  selector: 'infinite-scroll-example',
+  templateUrl: 'infinite-scroll-example.html',
+  styleUrls: ['./infinite-scroll-example.css']
+})
+export class InfiniteScrollExample {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+
+  constructor() {}
+
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      if (data.length == 1000) {
+        event.target.disabled = true;
+      }
+    }, 500);
+  }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+}
+```
+
+
+### Javascript
+
+```html
+<ion-content>
+  <ion-button onClick="toggleInfiniteScroll()" expand="block">
+    Toggle Infinite Scroll
+  </ion-button>
+
+  <ion-list></ion-list>
+
+  <ion-infinite-scroll threshold="100px" id="infinite-scroll">
+    <ion-infinite-scroll-content
+      loading-spinner="bubbles"
+      loading-text="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+```
+
+```javascript
+const infiniteScroll = document.getElementById('infinite-scroll');
+
+infiniteScroll.addEventListener('ionInfinite', function(event) {
+  setTimeout(function() {
+    console.log('Done');
+    event.target.complete();
+
+    // App logic to determine if all data is loaded
+    // and disable the infinite scroll
+    if (data.length == 1000) {
+      event.target.disabled = true;
+    }
+  }, 500);
+});
+
+function toggleInfiniteScroll() {
+  infiniteScroll.disabled = !infiniteScroll.disabled;
+}
+```
+
 
 
 ## Properties
@@ -26,14 +127,14 @@ Separating the `ion-infinite-scroll` and `ion-infinite-scroll-content` component
 
 ## Events
 
-| Event         | Description                                                                                                                                                                                 | Detail |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `ionInfinite` | Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed. | void   |
+| Event         | Description                                                                                                                                                                                 | Type                |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `ionInfinite` | Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed. | `CustomEvent<void>` |
 
 
 ## Methods
 
-### `complete() => void`
+### `complete() => Promise<void>`
 
 Call `complete()` within the `ionInfinite` output event handler when
 your async operation has completed. For example, the `loading`
@@ -46,7 +147,7 @@ to `enabled`.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 

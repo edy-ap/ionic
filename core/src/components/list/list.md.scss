@@ -15,11 +15,6 @@
   @include position-horizontal(0, null);
 }
 
-.list-md:not(.list-inset):not(.list-md-lines-none) .item:last-child {
-  --inner-border-width: 0;
-  --border-width: #{0 0 $list-md-item-border-bottom-width 0};
-}
-
 
 // Material Design Inset List
 // --------------------------------------------------
@@ -31,7 +26,7 @@
 
 .list-md.list-inset ion-item:first-child {
   --border-radius: #{$list-inset-md-border-radius $list-inset-md-border-radius 0 0};
-  --border-width: 0;
+  --border-width: #{0 0 $item-md-border-bottom-width 0};
 }
 
 .list-md.list-inset ion-item:last-child {
@@ -78,7 +73,6 @@
   --inner-border-width: #{0 0 $list-md-item-border-bottom-width 0};
 }
 
-
 // Remove the border from items in lists
 // if they are explicitly styled by the item
 // to be different than the list
@@ -88,4 +82,17 @@
 
 .list-md .item-lines-full {
   --inner-border-width: 0;
+}
+
+.list-md .item-lines-none {
+  --border-width: 0;
+  --inner-border-width: 0;
+}
+
+
+// Material Design List Inside A Card
+// --------------------------------------------------
+
+ion-card .list-md {
+  @include margin(0);
 }

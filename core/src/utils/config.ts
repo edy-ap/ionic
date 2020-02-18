@@ -8,6 +8,12 @@ export interface IonicConfig {
   animated?: boolean;
 
   /**
+   * When it's set to `false`, it disables all material-design ripple-effects across the app.
+   * Defaults to `true`.
+   */
+  rippleEffect?: boolean;
+
+  /**
    * The mode determines which platform styles to use for the whole application.
    */
   mode?: Mode;
@@ -159,21 +165,27 @@ export interface IonicConfig {
    */
   pickerLeave?: AnimationBuilder;
 
+  /**
+   * EXPERIMENTAL: Adds a page shadow to transitioning pages on iOS. Disabled by default.
+   */
+  experimentalTransitionShadow?: boolean;
+
   // PRIVATE configs
   keyboardHeight?: number;
   inputShims?: boolean;
-  scrollPadding?: string;
-  inputBlurring?: string;
+  scrollPadding?: boolean;
+  inputBlurring?: boolean;
   scrollAssist?: boolean;
-  hideCaretOnScroll?: string;
+  hideCaretOnScroll?: boolean;
 
   // INTERNAL configs
   persistConfig?: boolean;
   _forceStatusbarPadding?: boolean;
   _testing?: boolean;
+  _zoneGate?: (h: () => any) => any;
 }
 
-export function setupConfig(config: IonicConfig) {
+export const setupConfig = (config: IonicConfig) => {
   const win = window as any;
   const Ionic = win.Ionic;
   if (Ionic && Ionic.config && Ionic.config.constructor.name !== 'Object') {
@@ -186,4 +198,17 @@ export function setupConfig(config: IonicConfig) {
     ...config
   };
   return win.Ionic.config;
-}
+};
+
+export const getMode = (): Mode => {
+  const win = window as any;
+  const config = win && win.Ionic && win.Ionic.config;
+  if (config) {
+    if (config.mode) {
+      return config.mode;
+    } else {
+      return config.get('mode');
+    }
+  }
+  return 'md';
+};

@@ -7,8 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="../../../../../css/ionic.bundle.css" rel="stylesheet">
   <link href="../../../../../scripts/testing/styles.css" rel="stylesheet">
-  <script src="../../../../../dist/ionic.js"></script>
-</head>
+  <script src="../../../../../scripts/testing/scripts.js"></script>
+  <script nomodule src="../../../../../dist/ionic/ionic.js"></script>
+  <script type="module" src="../../../../../dist/ionic/ionic.esm.js"></script></head>
 
 <body>
   <ion-app>
@@ -84,9 +85,9 @@
 
       <ion-card>
         <ion-list lines="none">
-          <ion-item href="#" class="activated">
+          <ion-item href="#" class="ion-activated">
             <ion-icon name="wifi" slot="start"></ion-icon>
-            <ion-label>Link Item .activated</ion-label>
+            <ion-label>Link Item activated</ion-label>
             <ion-note>More</ion-note>
           </ion-item>
 
@@ -96,9 +97,9 @@
             <ion-note>More</ion-note>
           </ion-item>
 
-          <ion-item button class="activated">
+          <ion-item button class="ion-activated">
             <ion-icon name="warning" slot="start"></ion-icon>
-            <ion-label>Button Item .activated</ion-label>
+            <ion-label>Button Item activated</ion-label>
             <ion-note>More</ion-note>
           </ion-item>
 

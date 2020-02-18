@@ -7,14 +7,17 @@
 
 :host {
   --min-height: #{$item-md-min-height};
-  --background: var(--ion-item-background, transparent);
-  --background-activated: #{$item-md-background-activated};
+  --background: #{$item-md-background};
+  --background-activated: transparent;
+  --background-focused: currentColor;
+  --background-hover: currentColor;
+  --background-activated-opacity: 0;
+  --background-focused-opacity: .12;
+  --background-hover-opacity: .04;
   --border-color: #{$item-md-border-bottom-color};
   --color: #{$item-md-color};
-  --transition: background-color 300ms cubic-bezier(.4, 0, .2, 1);
+  --transition: opacity 15ms linear, background-color 15ms linear;
   --padding-start: #{$item-md-padding-start};
-  --background: #{$item-md-background};
-  --background-activated: #{$item-md-background-activated};
   --color: #{$item-md-color};
   --border-color: #{$item-md-border-bottom-color};
   --inner-padding-end: #{$item-md-padding-end};
@@ -28,6 +31,16 @@
   font-weight: normal;
 
   text-transform: none;
+}
+
+
+// Material Design Item: States
+// --------------------------------------------------
+
+:host(.ion-color.ion-activated) .item-native {
+  &::after {
+    background: transparent;
+  }
 }
 
 
@@ -75,7 +88,7 @@
 // Material Design Multi-line Item
 // --------------------------------------------------
 
-// TODO this works if manually adding the class / work with prop?
+// TODO this works if manually adding the class / should it work with prop?
 // Multi-line items should align the slotted content at the top
 :host(.item-multi-line) ::slotted([slot="start"]),
 :host(.item-multi-line) ::slotted([slot="end"]) {
@@ -87,11 +100,11 @@
 // Material Design Item Slots
 // --------------------------------------------------
 
-::slotted(:not(.interactive)[slot="start"]) {
+::slotted([slot="start"]) {
   @include margin-horizontal($item-md-start-slot-margin-start, $item-md-start-slot-margin-end);
 }
 
-::slotted(:not(.interactive)[slot="end"]) {
+::slotted([slot="end"]) {
   @include margin-horizontal($item-md-end-slot-margin-start, $item-md-end-slot-margin-end);
 }
 
@@ -100,10 +113,13 @@
 // --------------------------------------------------
 
 ::slotted(ion-icon) {
-
   color: $item-md-icon-slot-color;
 
   font-size: $item-md-icon-slot-font-size;
+}
+
+:host(.ion-color) ::slotted(ion-icon) {
+  color: current-color(contrast);
 }
 
 ::slotted(ion-icon[slot]) {
@@ -116,6 +132,15 @@
 
 ::slotted(ion-icon[slot="end"]) {
   @include margin-horizontal($item-md-icon-end-slot-margin-start, $item-md-icon-end-slot-margin-end);
+}
+
+
+// Material Design Slotted Toggle
+// --------------------------------------------------
+
+::slotted(ion-toggle[slot="start"]),
+::slotted(ion-toggle[slot="end"]) {
+  @include margin(0);
 }
 
 
@@ -179,6 +204,15 @@
 }
 
 
+// Material Design Slotted Label
+// --------------------------------------------------
+
+::slotted(ion-label) {
+  @include margin($item-md-label-margin-top, $item-md-label-margin-end, $item-md-label-margin-bottom, $item-md-label-margin-start);
+}
+
+
+
 // Material Design Floating/Stacked Label
 // --------------------------------------------------
 
@@ -200,20 +234,15 @@
 // Material Design Item Button
 // --------------------------------------------------
 
-::slotted(.button-small-md) {
+::slotted(.button-small) {
   --padding-top: 0;
   --padding-bottom: 0;
   --padding-start: .6em;
   --padding-end: .6em;
-  --height: 25px;
+
+  height: 25px;
 
   font-size: 12px;
-}
-
-
-// TODO, review
-::slotted(.button-small-md) ion-icon[slot="icon-only"] {
-  @include padding(0);
 }
 
 
@@ -230,24 +259,14 @@
 
 :host(.item-label-floating),
 :host(.item-label-stacked) {
-  --min-height: 65px;
+  --min-height: 55px;
 }
 
-// TODO: refactor
-:host(.item-label-stacked) ::slotted(ion-input),
-:host(.item-label-floating) ::slotted(ion-input),
-:host(.item-label-stacked) ::slotted(ion-textarea),
-:host(.item-label-floating) ::slotted(ion-textarea),
+// TODO: refactor, ion-item and ion-textarea have the same CSS
 :host(.item-label-stacked) ::slotted(ion-select),
 :host(.item-label-floating) ::slotted(ion-select) {
   --padding-top: 8px;
   --padding-bottom: 8px;
-  --padding-start: 0;
-}
-
-
-:host(:not(.item-label)) ::slotted(ion-input),
-:host(:not(.item-label)) ::slotted(ion-textarea) {
   --padding-start: 0;
 }
 
